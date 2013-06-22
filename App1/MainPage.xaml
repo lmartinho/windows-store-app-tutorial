@@ -40,7 +40,7 @@
         <StackPanel Grid.Row="1" Margin="120,30,0,0">
             <TextBlock Text="What's your name?" Style="{StaticResource BasicTextStyle}"/>
             <StackPanel Orientation="Horizontal" Margin="0,20,0,20">
-                <TextBox x:Name="nameInput" Width="300" HorizontalAlignment="left"/>
+                <TextBox x:Name="nameInput" Width="300" HorizontalAlignment="left" TextChanged="NameInput_TextChanged"/>
                 <Button Content="Say &quot;Hello&quot;" Click="Button_Click_1"/>
             </StackPanel>
             <TextBlock x:Name="greetingOutput" Style="{StaticResource BigGreenTextStyle}"/>
