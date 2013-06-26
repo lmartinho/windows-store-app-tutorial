@@ -21,6 +21,8 @@ namespace App1
     /// </summary>
     public sealed partial class PhotoPage : App1.Common.LayoutAwarePage
     {
+        private string mruToken = null;
+
         public PhotoPage()
         {
             this.InitializeComponent();
@@ -35,8 +37,40 @@ namespace App1
         /// </param>
         /// <param name="pageState">A dictionary of state preserved by this page during an earlier
         /// session.  This will be null the first time a page is visited.</param>
-        protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
+        protected async override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            if (pageState != null && pageState.ContainsKey("mruToken"))
+            {
+                object value = null;
+                if (pageState.TryGetValue("mruToken", out value))
+                {
+                    if (value != null)
+                    {
+                        mruToken = value.ToString();
+
+                        // Open the file via the token that you stored when adding this file into the MRU list.
+                        Windows.Storage.StorageFile file =
+                            await Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.GetFileAsync(mruToken);
+
+                        if (file != null)
+                        {
+                            // Open a stream for the selected file.
+                            Windows.Storage.Streams.IRandomAccessStream fileStream =
+                                await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+
+                            // Set the image source to a bitmap.
+                            Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage =
+                                new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+
+                            bitmapImage.SetSource(fileStream);
+                            displayImage.Source = bitmapImage;
+
+                            // Set the data context for the page.
+                            this.DataContext = file;
+                        }
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -47,6 +81,50 @@ namespace App1
         /// <param name="pageState">An empty dictionary to be populated with serializable state.</param>
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
+            if(!String.IsNullOrEmpty(mruToken)) {
+                pageState["mruToken"] = mruToken;
+            }
+        }
+
+        private async void GetPhotoButton_Click(object sender, RoutedEventArgs e)
+        {
+            // File picker APIs don't work if the app is in a snapped state.
+            // If the app is snapped, try to unsnap it first. Only show the picker if it unsnaps.
+            if (Windows.UI.ViewManagement.ApplicationView.Value != Windows.UI.ViewManagement.ApplicationViewState.Snapped ||
+                 Windows.UI.ViewManagement.ApplicationView.TryUnsnap() == true)
+            {
+                Windows.Storage.Pickers.FileOpenPicker openPicker = new Windows.Storage.Pickers.FileOpenPicker();
+                openPicker.SuggestedStartLocation = Windows.Storage.Pickers.PickerLocationId.PicturesLibrary;
+                openPicker.ViewMode = Windows.Storage.Pickers.PickerViewMode.Thumbnail;
+
+                // Filter to include a sample subset of file types.
+                openPicker.FileTypeFilter.Clear();
+                openPicker.FileTypeFilter.Add(".bmp");
+                openPicker.FileTypeFilter.Add(".png");
+                openPicker.FileTypeFilter.Add(".jpeg");
+                openPicker.FileTypeFilter.Add(".jpg");
+
+                // Open the file picker.
+                Windows.Storage.StorageFile file = await openPicker.PickSingleFileAsync();
+
+                // file is null if user cancels the file picker.
+                if (file != null)
+                {
+                    // Open a stream for the selected file.
+                    Windows.Storage.Streams.IRandomAccessStream fileStream =
+                        await file.OpenAsync(Windows.Storage.FileAccessMode.Read);
+
+                    // Set the image source to the selected bitmap.
+                    Windows.UI.Xaml.Media.Imaging.BitmapImage bitmapImage =
+                        new Windows.UI.Xaml.Media.Imaging.BitmapImage();
+
+                    bitmapImage.SetSource(fileStream);
+                    displayImage.Source = bitmapImage;
+                    this.DataContext = file;
+
+                    mruToken = Windows.Storage.AccessCache.StorageApplicationPermissions.MostRecentlyUsedList.Add(file);
+                }
+            }
         }
     }
 }
