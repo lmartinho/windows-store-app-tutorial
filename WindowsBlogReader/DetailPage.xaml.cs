@@ -37,6 +37,14 @@ namespace WindowsBlogReader
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            // Add this code to navigate the web view to the selected blog post.
+            string itemTitle = (string)navigationParameter;
+            FeedItem feedItem = FeedDataSource.GetItem(itemTitle);
+            if (feedItem != null)
+            {
+                this.contentView.Navigate(feedItem.Link);
+                this.DataContext = feedItem;
+            }
         }
 
         /// <summary>
@@ -48,5 +56,12 @@ namespace WindowsBlogReader
         protected override void SaveState(Dictionary<String, Object> pageState)
         {
         }
+
+        private void ContentView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        {
+            string errorString = "<p>Page could not be loaded.</p><p>Error is: " + e.WebErrorStatus.ToString() + "</p>";
+            this.contentView.NavigateToString(errorString);
+        }
+
     }
 }

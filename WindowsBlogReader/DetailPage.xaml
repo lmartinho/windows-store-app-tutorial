@@ -34,8 +34,14 @@
                 <ColumnDefinition Width="*"/>
             </Grid.ColumnDefinitions>
             <Button x:Name="backButton" Click="GoBack" IsEnabled="{Binding Frame.CanGoBack, ElementName=pageRoot}" Style="{StaticResource BackButtonStyle}"/>
-            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{StaticResource AppName}" Style="{StaticResource PageHeaderTextStyle}"/>
+            <TextBlock x:Name="pageTitle" Grid.Column="1" Text="{Binding Title}" Style="{StaticResource PageHeaderTextStyle}"/>
         </Grid>
+
+        <Border x:Name="contentViewBorder" BorderBrush="Gray" BorderThickness="2" 
+                Grid.Row="1" Margin="120,15,20,20">
+            <WebView x:Name="contentView" 
+                     NavigationFailed="ContentView_NavigationFailed"/>
+        </Border>
 
         <VisualStateManager.VisualStateGroups>
 

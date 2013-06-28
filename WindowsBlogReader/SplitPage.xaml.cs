@@ -129,6 +129,19 @@ namespace WindowsBlogReader
             // to showing the selected item's details.  When the selection is cleared this has the
             // opposite effect.
             if (this.UsingLogicalPageNavigation()) this.InvalidateVisualState();
+
+            // Add this code to populate the web view
+            //  with the content of the selected blog post.
+            Selector list = sender as Selector;
+            FeedItem selectedItem = list.SelectedItem as FeedItem;
+            if (selectedItem != null)
+            {
+                this.contentView.NavigateToString(selectedItem.Content);
+            }
+            else
+            {
+                this.contentView.NavigateToString("");
+            } 
         }
 
         /// <summary>
@@ -188,5 +201,22 @@ namespace WindowsBlogReader
         }
 
         #endregion
+
+        private void ContentView_NavigationFailed(object sender, WebViewNavigationFailedEventArgs e)
+        {
+            string errorString = "<p>Page could not be loaded.</p><p>Error is: " + e.WebErrorStatus.ToString() + "</p>";
+            this.contentView.NavigateToString(errorString);
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+
+            FeedItem selectedItem = this.itemListView.SelectedItem as FeedItem;
+            if (selectedItem != null && this.Frame != null)
+            {
+                string itemTitle = selectedItem.Title;
+                this.Frame.Navigate(typeof(DetailPage), itemTitle);
+            }
+        }
     }
 }
