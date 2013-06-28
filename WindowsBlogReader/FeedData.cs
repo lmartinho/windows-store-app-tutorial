@@ -148,7 +148,9 @@ namespace WindowsBlogReader
                             }
                             if (item.Id != null)
                             {
-                                feedItem.Link = new Uri("http://windowsteamblog.com" + item.Id);
+                                // moved away from the tutorial as the id was holding the full uri already
+                                //feedItem.Link = new Uri("http://windowsteamblog.com" + item.Id);
+                                feedItem.Link = new Uri(item.Id);
                             }
                         }
                         else if (feed.SourceFormat == SyndicationFormat.Rss20)
