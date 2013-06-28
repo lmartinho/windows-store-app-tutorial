@@ -46,5 +46,18 @@ namespace WindowsBlogReader
                 this.DefaultViewModel["Items"] = feedDataSource.Feeds;
             }
         }
+
+        private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
+        {
+            // Navigate to the split page, configuring the new page
+            // by passing the title of the clicked item as a navigation parameter
+
+            if (e.ClickedItem != null)
+            {
+                string title = ((FeedData)e.ClickedItem).Title;
+                this.Frame.Navigate(typeof(SplitPage), title);
+            }
+
+        }
     }
 }

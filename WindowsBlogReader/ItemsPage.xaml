@@ -18,7 +18,7 @@
             Source="{Binding Items}"/>
 
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
-        <x:String x:Key="AppName">My Application</x:String>
+        <x:String x:Key="AppName">Windows Blogs Tutorial</x:String>
     </Page.Resources>
 
     <!--
@@ -43,7 +43,7 @@
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             ItemTemplate="{StaticResource Standard250x250ItemTemplate}"
             SelectionMode="None"
-            IsSwipeEnabled="false"/>
+            IsSwipeEnabled="false" IsItemClickEnabled="True" ItemClick="ItemView_ItemClick"/>
 
         <!-- Vertical scrolling list only used when snapped -->
         <ListView
@@ -58,7 +58,7 @@
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
             ItemTemplate="{StaticResource Standard80ItemTemplate}"
             SelectionMode="None"
-            IsSwipeEnabled="false"/>
+            IsSwipeEnabled="false" IsItemClickEnabled="True" ItemClick="ItemView_ItemClick"/>
 
         <!-- Back button and page title -->
         <Grid>
