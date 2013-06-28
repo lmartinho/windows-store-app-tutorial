@@ -39,7 +39,7 @@ namespace WindowsBlogReader
         /// search results, and so forth.
         /// </summary>
         /// <param name="args">Details about the launch request and process.</param>
-        protected override void OnLaunched(LaunchActivatedEventArgs args)
+        protected async override void OnLaunched(LaunchActivatedEventArgs args)
         {
             Frame rootFrame = Window.Current.Content as Frame;
 
@@ -49,6 +49,25 @@ namespace WindowsBlogReader
             {
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
+
+                // Add this code after "rootFrame = new Frame();"
+                var connectionProfile = Windows.Networking.Connectivity.NetworkInformation.GetInternetConnectionProfile();
+                if (connectionProfile != null)
+                {
+                    FeedDataSource feedDataSource = (FeedDataSource)App.Current.Resources["feedDataSource"];
+                    if (feedDataSource != null)
+                    {
+                        if (feedDataSource.Feeds.Count == 0)
+                        {
+                            await feedDataSource.GetFeedsAsync();
+                        }
+                    }
+                }
+                else
+                {
+                    var messageDialog = new Windows.UI.Popups.MessageDialog("An internet connection is needed to download feeds. Please check your connection and restart the app.");
+                    var result = messageDialog.ShowAsync();
+                }
 
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
