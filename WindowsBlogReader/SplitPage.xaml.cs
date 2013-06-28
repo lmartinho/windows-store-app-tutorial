@@ -43,6 +43,13 @@ namespace WindowsBlogReader
         {
             // TODO: Assign a bindable group to this.DefaultViewModel["Group"]
             // TODO: Assign a collection of bindable items to this.DefaultViewModel["Items"]
+            string feedTitle = (string)navigationParameter;
+            FeedData feedData = FeedDataSource.GetFeed(feedTitle);
+            if (feedData != null)
+            {
+                this.DefaultViewModel["Feed"] = feedData;
+                this.DefaultViewModel["Items"] = feedData.Items;
+            }
 
             if (pageState == null)
             {
