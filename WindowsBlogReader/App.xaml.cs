@@ -50,6 +50,9 @@ namespace WindowsBlogReader
                 // Create a Frame to act as the navigation context and navigate to the first page
                 rootFrame = new Frame();
 
+                // Registers the frame for suspending
+                WindowsBlogReader.Common.SuspensionManager.RegisterFrame(rootFrame, "appFrame");
+
                 // Add this code after "rootFrame = new Frame();"
                 var connectionProfile = Windows.Networking.Connectivity.NetworkInformation.GetInternetConnectionProfile();
                 if (connectionProfile != null)
@@ -71,7 +74,8 @@ namespace WindowsBlogReader
 
                 if (args.PreviousExecutionState == ApplicationExecutionState.Terminated)
                 {
-                    //TODO: Load state from previously suspended application
+                    // Load state from previously suspended application
+                    await WindowsBlogReader.Common.SuspensionManager.RestoreAsync();
                 }
 
                 // Place the frame in the current Window
@@ -99,10 +103,11 @@ namespace WindowsBlogReader
         /// </summary>
         /// <param name="sender">The source of the suspend request.</param>
         /// <param name="e">Details about the suspend request.</param>
-        private void OnSuspending(object sender, SuspendingEventArgs e)
+        private async void OnSuspending(object sender, SuspendingEventArgs e)
         {
             var deferral = e.SuspendingOperation.GetDeferral();
             //TODO: Save application state and stop any background activity
+            await WindowsBlogReader.Common.SuspensionManager.SaveAsync();
             deferral.Complete();
         }
     }

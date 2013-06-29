@@ -64,14 +64,20 @@ namespace WindowsBlogReader
                 {
                     this.itemsViewSource.View.MoveCurrentToFirst();
                 }
+                else
+                {
+                    this.itemsViewSource.View.MoveCurrentToPosition(-1);
+                }
             }
             else
             {
                 // Restore the previously saved state associated with this page
                 if (pageState.ContainsKey("SelectedItem") && this.itemsViewSource.View != null)
                 {
-                    // TODO: Invoke this.itemsViewSource.View.MoveCurrentTo() with the selected
-                    //       item as specified by the value of pageState["SelectedItem"]
+
+                    string itemTitle = (string)pageState["SelectedItem"];
+                    FeedItem selectedItem = FeedDataSource.GetItem(itemTitle);
+                    this.itemsViewSource.View.MoveCurrentTo(selectedItem);
                 }
             }
         }
@@ -87,8 +93,8 @@ namespace WindowsBlogReader
             if (this.itemsViewSource.View != null)
             {
                 var selectedItem = this.itemsViewSource.View.CurrentItem;
-                // TODO: Derive a serializable navigation parameter and assign it to
-                //       pageState["SelectedItem"]
+                string itemTitle = ((FeedItem)selectedItem).Title;
+                pageState["SelectedItem"] = itemTitle;
             }
         }
 
