@@ -16,6 +16,15 @@
             </ResourceDictionary.MergedDictionaries>
 
             <local:FeedDataSource x:Key="feedDataSource"/>
+
+            <SolidColorBrush x:Key="WindowsBlogBackgroundBrush" 
+                                    Color="#FF0A2562"/>
+            <Style x:Key="WindowsBlogLayoutRootStyle" 
+                           TargetType="Panel" 
+                           BasedOn="{StaticResource LayoutRootStyle}">
+                <Setter Property="Background" 
+                                Value="{StaticResource WindowsBlogBackgroundBrush}"/>
+            </Style>
         </ResourceDictionary>
     </Application.Resources>
 </Application>
