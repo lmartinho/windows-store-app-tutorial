@@ -33,23 +33,22 @@
                     <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition Width="*"/>
                 </Grid.ColumnDefinitions>
-                <Border Background="{StaticResource ListViewItemPlaceholderBackgroundThemeBrush}" 
-                        Width="110" Height="110">
-                    <Image Source="{Binding Image}" Stretch="UniformToFill" 
-                           AutomationProperties.Name="{Binding Title}"/>
+
+                <Border Background="#FF6BBD46" Width="110" Height="110">
+                    <ContentControl Template="{StaticResource DateBlockTemplate}" />
                 </Border>
+
                 <StackPanel Grid.Column="1" VerticalAlignment="Top" Margin="10,0,0,0">
-                    <TextBlock Text="{Binding Title}" 
-                               Style="{StaticResource TitleTextStyle}" TextWrapping="NoWrap"/>
-                    <TextBlock Text="{Binding Author}" Style="{StaticResource CaptionTextStyle}" TextWrapping="NoWrap"/>
-                    <TextBlock Text="{Binding PubDate}" Style="{StaticResource BodyTextStyle}" MaxHeight="60"/>
+                    <TextBlock Text="{Binding Title}" FontSize="26.667" TextWrapping="Wrap"
+                               MaxHeight="72" Foreground="#FFFE5815" />
+                    <TextBlock Text="{Binding Author}" FontSize="18.667" />
                 </StackPanel>
             </Grid>
         </DataTemplate>
     </Page.Resources>
 
     <Page.TopAppBar>
-        <AppBar Padding="10,0,10,0">
+        <AppBar Padding="10,0,10,0" Background="#F20A2562">
             <Grid>
 
                 <Button HorizontalAlignment="Right" 
