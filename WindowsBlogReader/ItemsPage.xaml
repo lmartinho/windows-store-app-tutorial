@@ -19,6 +19,33 @@
 
         <!-- TODO: Delete this line if the key AppName is declared in App.xaml -->
         <x:String x:Key="AppName">Windows Blogs Tutorial</x:String>
+        <!-- light blue -->
+        <SolidColorBrush x:Key="BlockBackgroundBrush" Color="#FF557EB9"/>
+
+        <!-- Grid Styles -->
+        <Style x:Key="GridTitleTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
+            <Setter Property="FontSize" Value="26.667"/>
+            <Setter Property="Margin" Value="12,0,12,2"/>
+        </Style>
+
+        <Style x:Key="GridDescriptionTextStyle" TargetType="TextBlock" BasedOn="{StaticResource BasicTextStyle}">
+            <Setter Property="VerticalAlignment" Value="Bottom"/>
+            <Setter Property="Margin" Value="12,0,12,60"/>
+        </Style>
+
+        <DataTemplate x:Key="DefaultGridItemTemplate">
+            <Grid HorizontalAlignment="Left" Width="250" Height="250">
+                <Border Background="{StaticResource BlockBackgroundBrush}" />
+                <TextBlock Text="{Binding Title}" Style="{StaticResource GridTitleTextStyle}"/>
+                <TextBlock Text="{Binding Description}" Style="{StaticResource GridDescriptionTextStyle}" />
+                <StackPanel VerticalAlignment="Bottom" Orientation="Horizontal"
+                        Background="{StaticResource ListViewItemOverlayBackgroundThemeBrush}">
+                    <TextBlock Text="Last Updated" Margin="12,4,0,8" Height="42"/>
+                    <TextBlock Text="{Binding PubDate, Converter={StaticResource dateConverter}}" Margin="12,4,12,8" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
+
     </Page.Resources>
 
     <!--
@@ -41,7 +68,7 @@
             Grid.RowSpan="2"
             Padding="116,136,116,46"
             ItemsSource="{Binding Source={StaticResource itemsViewSource}}"
-            ItemTemplate="{StaticResource Standard250x250ItemTemplate}"
+            ItemTemplate="{StaticResource DefaultGridItemTemplate}"
             SelectionMode="None"
             IsSwipeEnabled="false" IsItemClickEnabled="True" ItemClick="ItemView_ItemClick"/>
 
