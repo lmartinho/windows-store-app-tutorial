@@ -45,6 +45,29 @@
                 </StackPanel>
             </Grid>
         </DataTemplate>
+
+        <!-- green -->
+        <SolidColorBrush x:Key="BlockBackgroundBrush" Color="#FF6BBD46"/>
+
+        <!-- Used in Filled and Snapped views -->
+        <DataTemplate x:Key="NarrowListItemTemplate">
+            <Grid Height="80">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <Border Background="{StaticResource BlockBackgroundBrush}" 
+                        Width="80" Height="80"/>
+                <ContentControl Template="{StaticResource DateBlockTemplate}" 
+                                Margin="-12,-12,0,0"/>
+                <StackPanel Grid.Column="1" HorizontalAlignment="Left" 
+                            Margin="12,8,0,0">
+                    <TextBlock Text="{Binding Title}" MaxHeight="56" 
+                               Foreground="#FFFE5815" TextWrapping="Wrap"/>
+                    <TextBlock Text="{Binding Author}" FontSize="12" />
+                </StackPanel>
+            </Grid>
+        </DataTemplate>
     </Page.Resources>
 
     <Page.TopAppBar>
@@ -142,7 +165,7 @@
                             <DiscreteObjectKeyFrame KeyTime="0" Value="420"/>
                         </ObjectAnimationUsingKeyFrames>
                         <ObjectAnimationUsingKeyFrames Storyboard.TargetName="itemListView" Storyboard.TargetProperty="ItemTemplate">
-                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource Standard80ItemTemplate}"/>
+                            <DiscreteObjectKeyFrame KeyTime="0" Value="{StaticResource NarrowListItemTemplate}"/>
                         </ObjectAnimationUsingKeyFrames>
                     </Storyboard>
                 </VisualState>
