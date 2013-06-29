@@ -41,6 +41,11 @@ namespace WindowsBlogReader
         /// session.  This will be null the first time a page is visited.</param>
         protected override void LoadState(Object navigationParameter, Dictionary<String, Object> pageState)
         {
+            // Run the PopInThemeAnimation 
+            Windows.UI.Xaml.Media.Animation.Storyboard sb =
+                this.FindName("PopInStoryboard") as Windows.UI.Xaml.Media.Animation.Storyboard;
+            if (sb != null) sb.Begin();
+
             // TODO: Assign a bindable group to this.DefaultViewModel["Group"]
             // TODO: Assign a collection of bindable items to this.DefaultViewModel["Items"]
             string feedTitle = (string)navigationParameter;
